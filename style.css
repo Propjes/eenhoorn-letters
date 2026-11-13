@@ -4,116 +4,241 @@
   padding: 0;
 }
 
-body {
-  font-family: "Comic Sans MS", "Chalkboard SE", sans-serif;
-  background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.spel {
-  background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-  padding: 32px;
-  max-width: 480px;
-  width: 90%;
+body {
+  font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", cursive;
+  background: #87ceeb;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+#canvas-houder,
+#canvas-houder canvas {
+  position: fixed;
+  inset: 0;
+  display: block;
+}
+
+.verborgen {
+  display: none !important;
+}
+
+.hud-vak {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.88);
+  border: 4px solid #ffb3e1;
+  border-radius: 22px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  padding: 10px 18px;
+  z-index: 10;
+}
+
+#woord-vak {
+  top: 14px;
+  left: 14px;
+  font-size: 2.2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+#woord-emoji {
+  font-size: 2.6rem;
+}
+
+.letter-vak {
+  display: inline-block;
+  min-width: 1.1em;
+  margin: 0 2px;
+  padding: 0 6px;
+  border-bottom: 5px solid #c9a7f5;
+  color: #b0b0b0;
   text-align: center;
 }
 
-h1 {
+.letter-vak.gevuld {
+  border-bottom-color: #7b2ff7;
+  animation: pop 0.35s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(0.4); }
+  60% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+#score-vak {
+  top: 14px;
+  right: 14px;
+  font-size: 1.8rem;
+  font-weight: bold;
   color: #7b2ff7;
-  margin-bottom: 8px;
-}
-
-.uitleg {
-  color: #555;
-  margin-bottom: 16px;
-}
-
-.scoreboard {
   display: flex;
-  justify-content: space-between;
-  font-size: 1.1rem;
-  color: #333;
-  margin-bottom: 16px;
+  align-items: center;
+  gap: 10px;
+  border-color: #a6e3ff;
 }
 
-.kaart {
-  font-size: 6rem;
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(135deg, #7b2ff7, #f107a3);
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-}
-
-.antwoorden {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.antwoord {
+.hud-knop {
   font-size: 1.5rem;
-  font-weight: bold;
-  padding: 16px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
   border: 3px solid #7b2ff7;
-  border-radius: 12px;
   background: #f6efff;
-  color: #7b2ff7;
   cursor: pointer;
-  transition: transform 0.1s, background 0.2s;
-  text-transform: uppercase;
+  transition: transform 0.1s;
 }
 
-.antwoord:hover {
-  background: #e3d4ff;
-  transform: scale(1.05);
+.hud-knop:hover {
+  transform: scale(1.1);
 }
 
-.antwoord.goed {
-  background: #b6f0b6;
-  border-color: #2e9e2e;
-  color: #1c6b1c;
+.hud-knop:active {
+  transform: scale(0.95);
 }
 
-.antwoord.fout {
-  background: #ffc9c9;
-  border-color: #d33;
-  color: #a11;
+#spaarbak {
+  bottom: 14px;
+  left: 14px;
+  max-width: 45vw;
+  min-height: 56px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  border-color: #b6f0b6;
 }
 
-.feedback {
-  min-height: 1.5em;
-  font-size: 1.1rem;
+.spaar-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  font-size: 1.3rem;
   font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  animation: pop 0.35s ease;
+}
+
+#banner {
+  position: fixed;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3.4rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff7ad9, #7b2ff7);
+  border: 6px solid #ffffff;
+  border-radius: 36px;
+  padding: 20px 44px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  animation: banner-pop 0.5s ease;
+  white-space: nowrap;
+}
+
+@keyframes banner-pop {
+  0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+  70% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+#aanraak-knoppen {
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.aanraak {
+  width: 64px;
+  height: 64px;
+  font-size: 1.7rem;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  touch-action: none;
+}
+
+.aanraak:active,
+.aanraak.actief {
+  background: rgba(123, 47, 247, 0.55);
+  transform: scale(0.92);
+}
+
+#startscherm {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+  padding: 20px;
+}
+
+.start-kaart {
+  background: #ffffff;
+  border: 6px solid #ffb3e1;
+  border-radius: 32px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+  padding: 36px 40px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+}
+
+.start-kaart h1 {
+  color: #7b2ff7;
+  font-size: 2.6rem;
+  margin-bottom: 18px;
+  text-shadow: 2px 2px 0 #ffd6f2;
+}
+
+.start-kaart p {
+  color: #555;
+  font-size: 1.25rem;
+  line-height: 1.5;
   margin-bottom: 12px;
 }
 
-.feedback.goed {
-  color: #2e9e2e;
-}
-
-.feedback.fout {
-  color: #d33;
-}
-
-.knop {
-  font-size: 1rem;
-  padding: 10px 20px;
-  border: none;
+#start-knop {
+  margin-top: 14px;
+  font-family: inherit;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff7ad9, #7b2ff7);
+  border: 5px solid #ffffff;
   border-radius: 999px;
-  background: #7b2ff7;
-  color: #fff;
+  padding: 16px 52px;
   cursor: pointer;
+  box-shadow: 0 8px 20px rgba(123, 47, 247, 0.4);
+  transition: transform 0.12s;
 }
 
-.knop:hover {
-  background: #5f1fd1;
+#start-knop:hover {
+  transform: scale(1.07);
+}
+
+#start-knop:active {
+  transform: scale(0.96);
 }
