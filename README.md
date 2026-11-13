@@ -12,6 +12,7 @@ fanfare en een ster! ⭐
 - `index.html` — de pagina (laadt Three.js r128 via CDN)
 - `style.css` — de styling (pastel, groot rond lettertype)
 - `game.js` — de 3D-wereld en spellogica (Three.js + WebAudio)
+- `eenhoorn-letters.html` — alles in één bestand (handig voor iPhone: Download ZIP → uitpakken → dit bestand openen in Safari; internet nodig voor de Three.js-CDN)
 - `README.md` — dit bestand
 
 ## Spelen
