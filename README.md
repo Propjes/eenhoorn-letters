@@ -18,8 +18,9 @@ fanfare en een ster! ⭐
 
 Open `index.html` in een browser. Geen build-stap nodig.
 
-- Bewegen: pijltjestoetsen of WASD (op tablet: de ronde knoppen onderaan)
-- 🔊 geluidaAN/uit, 🔄 opnieuw beginnen
+- Kies aan het begin je dier: eenhoorn 🦄, paard 🐴 of otter 🦦
+- Bewegen: pijltjestoetsen of WASD, relatief ten opzichte van de camera (op tablet: de ronde knoppen onderaan)
+- 🔊 geluid aan/uit, 🔄 opnieuw beginnen
 
 ## Woordenlijst
 

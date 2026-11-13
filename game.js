@@ -157,8 +157,9 @@
     maakWolken();
     maakBomen();
     maakBloemen();
-    unicorn = maakEenhoorn();
+    unicorn = maakDier(huidigDier);
     unicornBody = unicorn.body;
+    poten = unicorn.poten;
     scene.add(unicorn.group);
     maakVlinders();
     konijn = maakKonijn();
@@ -283,17 +284,22 @@
     }
   }
 
-  function maakEenhoorn() {
+  function maakDier(type) {
     var group = new THREE.Group();
     var body = new THREE.Group();
     group.add(body);
 
-    var wit = new THREE.MeshLambertMaterial({ color: 0xffffff });
+    var isEenhoorn = type === "eenhoorn";
+    var isPaard = type === "paard";
+    var vachtKleur = isEenhoorn ? 0xffffff : isPaard ? 0xb07845 : 0x9c6b30;
+    var manenKleuren = isEenhoorn ? [0xff7ad9, 0xa06bff, 0x40e0d0] : isPaard ? [0x5c3a1e, 0x6e4a26, 0x5c3a1e] : [];
+    var staartKleur = isEenhoorn ? 0x40e0d0 : isPaard ? 0x5c3a1e : 0x9c6b30;
+    var hoefKleur = isEenhoorn ? 0xa06bff : isPaard ? 0x3d2b1a : 0x6b4a20;
+    var wit = new THREE.MeshLambertMaterial({ color: vachtKleur });
     var goud = new THREE.MeshLambertMaterial({ color: 0xffd700 });
-    var roze = new THREE.MeshLambertMaterial({ color: 0xff7ad9 });
-    var paars = new THREE.MeshLambertMaterial({ color: 0xa06bff });
-    var turquoise = new THREE.MeshLambertMaterial({ color: 0x40e0d0 });
+    var turquoise = new THREE.MeshLambertMaterial({ color: staartKleur });
     var oogMat = new THREE.MeshLambertMaterial({ color: 0x222222 });
+    var lokalePoten = [];
 
     var romp = new THREE.Mesh(new THREE.SphereGeometry(0.9, 24, 18), wit);
     romp.scale.set(1, 0.9, 1.35);
@@ -311,16 +317,24 @@
     snuit.position.set(0, 1.8, 1.45);
     body.add(snuit);
 
-    var hoorn = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.75, 16), goud);
-    hoorn.position.set(0, 2.55, 0.95);
-    hoorn.rotation.x = -0.15;
-    hoorn.castShadow = true;
-    body.add(hoorn);
+    if (isEenhoorn) {
+      var hoorn = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.75, 16), goud);
+      hoorn.position.set(0, 2.55, 0.95);
+      hoorn.rotation.x = -0.15;
+      hoorn.castShadow = true;
+      body.add(hoorn);
+    }
 
     [-1, 1].forEach(function (zijde) {
-      var oor = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.4, 10), wit);
-      oor.position.set(zijde * 0.28, 2.42, 0.78);
-      oor.rotation.z = -zijde * 0.35;
+      var oor;
+      if (type === "otter") {
+        oor = new THREE.Mesh(new THREE.SphereGeometry(0.13, 10, 8), wit);
+        oor.position.set(zijde * 0.3, 2.35, 0.8);
+      } else {
+        oor = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.4, 10), wit);
+        oor.position.set(zijde * 0.28, 2.42, 0.78);
+        oor.rotation.z = -zijde * 0.35;
+      }
       body.add(oor);
       var oog = new THREE.Mesh(new THREE.SphereGeometry(0.075, 10, 8), oogMat);
       oog.position.set(zijde * 0.24, 2.05, 1.36);
@@ -328,13 +342,19 @@
     });
 
     var manen = [
-      { pos: [0, 2.35, 0.55], r: 0.3, mat: roze },
-      { pos: [0, 2.2, 0.25], r: 0.27, mat: paars },
-      { pos: [0, 2.0, -0.05], r: 0.25, mat: turquoise },
-      { pos: [0, 2.42, 1.2], r: 0.2, mat: roze }
+      { pos: [0, 2.35, 0.55], r: 0.3, kleur: manenKleuren[0] },
+      { pos: [0, 2.2, 0.25], r: 0.27, kleur: manenKleuren[1] },
+      { pos: [0, 2.0, -0.05], r: 0.25, kleur: manenKleuren[2] }
     ];
+    if (isEenhoorn) {
+      manen.push({ pos: [0, 2.42, 1.2], r: 0.2, kleur: manenKleuren[0] });
+    }
     manen.forEach(function (m) {
-      var bol = new THREE.Mesh(new THREE.SphereGeometry(m.r, 14, 10), m.mat);
+      if (m.kleur === undefined) return;
+      var bol = new THREE.Mesh(
+        new THREE.SphereGeometry(m.r, 14, 10),
+        new THREE.MeshLambertMaterial({ color: m.kleur })
+      );
       bol.position.set(m.pos[0], m.pos[1], m.pos[2]);
       body.add(bol);
     });
@@ -351,14 +371,34 @@
       been.position.y = -0.42;
       been.castShadow = true;
       poot.add(been);
-      var hoef = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.16, 0.24), paars);
+      var hoef = new THREE.Mesh(
+        new THREE.BoxGeometry(0.24, 0.16, 0.24),
+        new THREE.MeshLambertMaterial({ color: hoefKleur })
+      );
       hoef.position.y = -0.8;
       poot.add(hoef);
       body.add(poot);
-      poten.push(poot);
+      lokalePoten.push(poot);
     });
 
-    return { group: group, body: body };
+    if (type === "otter") {
+      group.scale.setScalar(0.72);
+    } else if (type === "paard") {
+      group.scale.set(1.05, 1.12, 1.05);
+    }
+
+    return { group: group, body: body, poten: lokalePoten };
+  }
+
+  var huidigDier = "eenhoorn";
+
+  function setDier(type) {
+    scene.remove(unicorn.group);
+    unicorn = maakDier(type);
+    unicornBody = unicorn.body;
+    poten = unicorn.poten;
+    huidigDier = type;
+    scene.add(unicorn.group);
   }
 
   function maakVlinders() {
@@ -458,12 +498,8 @@
 
   function maakLetterBlok(letter) {
     var kleur = letterKleur(letter);
-    var zij = new THREE.MeshLambertMaterial({ color: kleur.clone().multiplyScalar(0.72) });
-    var voorkant = new THREE.MeshLambertMaterial({ map: maakLetterTextuur(letter, kleur) });
-    var blok = new THREE.Mesh(
-      new THREE.BoxGeometry(1.1, 1.1, 1.1),
-      [zij, zij, zij, zij, voorkant, zij]
-    );
+    var materiaal = new THREE.MeshLambertMaterial({ map: maakLetterTextuur(letter, kleur) });
+    var blok = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.1, 1.1), materiaal);
     blok.castShadow = true;
     return blok;
   }
@@ -682,12 +718,36 @@
     knop.addEventListener("pointercancel", uit);
   });
 
+  var geselecteerdKarakter = "eenhoorn";
+
+  Array.prototype.forEach.call(document.querySelectorAll(".karakter-knop"), function (knop) {
+    knop.addEventListener("click", function () {
+      geselecteerdKarakter = knop.getAttribute("data-karakter");
+      Array.prototype.forEach.call(document.querySelectorAll(".karakter-knop"), function (k) {
+        k.classList.toggle("geselecteerd", k === knop);
+      });
+    });
+  });
+
   function updateBeweging(dt) {
-    var dx = (toetsen.rechts ? 1 : 0) - (toetsen.links ? 1 : 0);
-    var dz = (toetsen.omlaag ? 1 : 0) - (toetsen.omhoog ? 1 : 0);
-    var bewegend = dx !== 0 || dz !== 0;
+    var voor = new THREE.Vector3(
+      unicorn.group.position.x - camera.position.x,
+      0,
+      unicorn.group.position.z - camera.position.z
+    );
+    if (voor.lengthSq() < 0.0001) {
+      voor.set(0, 0, 1);
+    } else {
+      voor.normalize();
+    }
+    var rechts = new THREE.Vector3(-voor.z, 0, voor.x);
+    var ix = (toetsen.rechts ? 1 : 0) - (toetsen.links ? 1 : 0);
+    var iz = (toetsen.omhoog ? 1 : 0) - (toetsen.omlaag ? 1 : 0);
+    var mx = rechts.x * ix + voor.x * iz;
+    var mz = rechts.z * ix + voor.z * iz;
+    var bewegend = mx !== 0 || mz !== 0;
     if (bewegend && !vieringActief) {
-      var doelHoek = Math.atan2(dx, dz);
+      var doelHoek = Math.atan2(mx, mz);
       var diff = doelHoek - heading;
       while (diff > Math.PI) diff -= Math.PI * 2;
       while (diff < -Math.PI) diff += Math.PI * 2;
@@ -829,6 +889,9 @@
     startscherm.classList.add("verborgen");
     hud.classList.remove("verborgen");
     gameStarted = true;
+    if (geselecteerdKarakter !== huidigDier) {
+      setDier(geselecteerdKarakter);
+    }
     nieuwWoord();
   });
 

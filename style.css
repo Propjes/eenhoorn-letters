@@ -242,3 +242,49 @@ body {
 #start-knop:active {
   transform: scale(0.96);
 }
+
+.kies-label {
+  font-weight: bold;
+  color: #7b2ff7;
+  font-size: 1.25rem;
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
+#karakter-keuze {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 8px 0 6px;
+}
+
+.karakter-knop {
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: #7b2ff7;
+  background: #f6efff;
+  border: 4px solid #e3d4ff;
+  border-radius: 20px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.15s, background 0.15s;
+}
+
+.karakter-knop:hover {
+  transform: scale(1.06);
+}
+
+.karakter-knop.geselecteerd {
+  border-color: #7b2ff7;
+  background: #e3d4ff;
+  box-shadow: 0 4px 12px rgba(123, 47, 247, 0.35);
+}
+
+.karakter-emoji {
+  font-size: 2.2rem;
+}
