@@ -295,110 +295,191 @@
     }
   }
 
+  function lambert(kleur) {
+    return new THREE.MeshLambertMaterial({ color: kleur });
+  }
+
+  function addBol(parent, r, mat, x, y, z, sx, sy, sz) {
+    var m = new THREE.Mesh(new THREE.SphereGeometry(r, 18, 14), mat);
+    m.position.set(x, y, z);
+    m.scale.set(sx || 1, sy || 1, sz || 1);
+    m.castShadow = true;
+    parent.add(m);
+    return m;
+  }
+
+  function addDoos(parent, w, h, d, mat, x, y, z) {
+    var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+    m.position.set(x, y, z);
+    m.castShadow = true;
+    parent.add(m);
+    return m;
+  }
+
+  function addKegel(parent, r, h, mat, x, y, z, rx, rz) {
+    var m = new THREE.Mesh(new THREE.ConeGeometry(r, h, 12), mat);
+    m.position.set(x, y, z);
+    if (rx) m.rotation.x = rx;
+    if (rz) m.rotation.z = rz;
+    m.castShadow = true;
+    parent.add(m);
+    return m;
+  }
+
+  function addCilinder(parent, rt, rb, h, mat, x, y, z, rx, rz) {
+    var m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, 12), mat);
+    m.position.set(x, y, z);
+    if (rx) m.rotation.x = rx;
+    if (rz) m.rotation.z = rz;
+    m.castShadow = true;
+    parent.add(m);
+    return m;
+  }
+
+  function addOgen(body, x, y, z, r, kleur) {
+    var mat = lambert(kleur || 0x222222);
+    [-1, 1].forEach(function (z1) {
+      var oog = new THREE.Mesh(new THREE.SphereGeometry(r, 10, 8), mat);
+      oog.position.set(z1 * x, y, z);
+      body.add(oog);
+    });
+  }
+
+  function addOren(body, mat, x, y, z, r, h, tilt) {
+    [-1, 1].forEach(function (z1) {
+      var oor = new THREE.Mesh(new THREE.ConeGeometry(r, h, 10), mat);
+      oor.position.set(z1 * x, y, z);
+      oor.rotation.z = -z1 * tilt;
+      oor.castShadow = true;
+      body.add(oor);
+    });
+  }
+
+  function maakPoten(body, posities, lengte, breedte, matVacht, matHoef) {
+    var poten = [];
+    posities.forEach(function (p) {
+      var poot = new THREE.Group();
+      poot.position.set(p[0], p[1], p[2]);
+      var been = new THREE.Mesh(new THREE.CylinderGeometry(breedte * 0.45, breedte * 0.38, lengte, 10), matVacht);
+      been.position.y = -lengte / 2;
+      been.castShadow = true;
+      poot.add(been);
+      var onder = new THREE.Mesh(new THREE.CylinderGeometry(breedte * 0.5, breedte * 0.52, lengte * 0.2, 10), matHoef);
+      onder.position.y = -lengte + lengte * 0.1;
+      poot.add(onder);
+      body.add(poot);
+      poten.push(poot);
+    });
+    return poten;
+  }
+
+  function maakPaardachtig(body, vacht, manenKleuren, staartKleur, hoefKleur, metHoorn) {
+    addBol(body, 0.95, vacht, 0, 1.2, 0, 1, 0.85, 1.45);
+    addBol(body, 0.5, vacht, 0, 1.85, 0.72, 0.75, 1.15, 0.85);
+    addBol(body, 0.42, vacht, 0, 2.15, 1.05, 0.9, 0.8, 1.05);
+    addBol(body, 0.27, vacht, 0, 2.0, 1.45, 0.85, 0.65, 1.25);
+    if (metHoorn) {
+      addKegel(body, 0.13, 0.8, lambert(0xffd700), 0, 2.55, 0.98, -0.12, 0);
+    }
+    addOren(body, vacht, 0.2, 2.5, 0.92, 0.11, 0.38, 0.3);
+    addOgen(body, 0.19, 2.22, 1.28, 0.065);
+    manenKleuren.forEach(function (kleur, i) {
+      addBol(body, 0.24 - i * 0.03, lambert(kleur), 0, 2.42 - i * 0.24, 0.72 - i * 0.3);
+    });
+    addKegel(body, 0.2, 0.85, lambert(staartKleur), 0, 1.3, -1.35, Math.PI * 0.62, 0);
+    return maakPoten(body, [[-0.4, 0.95, 0.68], [0.4, 0.95, 0.68], [-0.4, 0.95, -0.68], [0.4, 0.95, -0.68]], 0.95, 0.24, vacht, lambert(hoefKleur));
+  }
+
   function maakDier(type) {
     var group = new THREE.Group();
     var body = new THREE.Group();
     group.add(body);
+    var poten = [];
 
-    var isEenhoorn = type === "eenhoorn";
-    var isPaard = type === "paard";
-    var vachtKleur = isEenhoorn ? 0xffffff : isPaard ? 0xb07845 : 0x9c6b30;
-    var manenKleuren = isEenhoorn ? [0xff7ad9, 0xa06bff, 0x40e0d0] : isPaard ? [0x5c3a1e, 0x6e4a26, 0x5c3a1e] : [];
-    var staartKleur = isEenhoorn ? 0x40e0d0 : isPaard ? 0x5c3a1e : 0x9c6b30;
-    var hoefKleur = isEenhoorn ? 0xa06bff : isPaard ? 0x3d2b1a : 0x6b4a20;
-    var wit = new THREE.MeshLambertMaterial({ color: vachtKleur });
-    var goud = new THREE.MeshLambertMaterial({ color: 0xffd700 });
-    var turquoise = new THREE.MeshLambertMaterial({ color: staartKleur });
-    var oogMat = new THREE.MeshLambertMaterial({ color: 0x222222 });
-    var lokalePoten = [];
-
-    var romp = new THREE.Mesh(new THREE.SphereGeometry(0.9, 24, 18), wit);
-    romp.scale.set(1, 0.9, 1.35);
-    romp.position.y = 1.15;
-    romp.castShadow = true;
-    body.add(romp);
-
-    var hoofd = new THREE.Mesh(new THREE.SphereGeometry(0.55, 24, 18), wit);
-    hoofd.position.set(0, 1.95, 0.95);
-    hoofd.castShadow = true;
-    body.add(hoofd);
-
-    var snuit = new THREE.Mesh(new THREE.SphereGeometry(0.32, 20, 14), wit);
-    snuit.scale.set(0.9, 0.7, 1.2);
-    snuit.position.set(0, 1.8, 1.45);
-    body.add(snuit);
-
-    if (isEenhoorn) {
-      var hoorn = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.75, 16), goud);
-      hoorn.position.set(0, 2.55, 0.95);
-      hoorn.rotation.x = -0.15;
-      hoorn.castShadow = true;
-      body.add(hoorn);
-    }
-
-    [-1, 1].forEach(function (zijde) {
-      var oor;
-      if (type === "otter") {
-        oor = new THREE.Mesh(new THREE.SphereGeometry(0.13, 10, 8), wit);
-        oor.position.set(zijde * 0.3, 2.35, 0.8);
-      } else {
-        oor = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.4, 10), wit);
-        oor.position.set(zijde * 0.28, 2.42, 0.78);
-        oor.rotation.z = -zijde * 0.35;
-      }
-      body.add(oor);
-      var oog = new THREE.Mesh(new THREE.SphereGeometry(0.075, 10, 8), oogMat);
-      oog.position.set(zijde * 0.24, 2.05, 1.36);
-      body.add(oog);
-    });
-
-    var manen = [
-      { pos: [0, 2.35, 0.55], r: 0.3, kleur: manenKleuren[0] },
-      { pos: [0, 2.2, 0.25], r: 0.27, kleur: manenKleuren[1] },
-      { pos: [0, 2.0, -0.05], r: 0.25, kleur: manenKleuren[2] }
-    ];
-    if (isEenhoorn) {
-      manen.push({ pos: [0, 2.42, 1.2], r: 0.2, kleur: manenKleuren[0] });
-    }
-    manen.forEach(function (m) {
-      if (m.kleur === undefined) return;
-      var bol = new THREE.Mesh(
-        new THREE.SphereGeometry(m.r, 14, 10),
-        new THREE.MeshLambertMaterial({ color: m.kleur })
-      );
-      bol.position.set(m.pos[0], m.pos[1], m.pos[2]);
-      body.add(bol);
-    });
-
-    var staart = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.8, 12), turquoise);
-    staart.position.set(0, 1.25, -1.2);
-    staart.rotation.x = Math.PI * 0.65;
-    body.add(staart);
-
-    [[-0.42, 0.62], [0.42, 0.62], [-0.42, -0.62], [0.42, -0.62]].forEach(function (p) {
-      var poot = new THREE.Group();
-      poot.position.set(p[0], 0.85, p[1]);
-      var been = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.85, 0.22), wit);
-      been.position.y = -0.42;
-      been.castShadow = true;
-      poot.add(been);
-      var hoef = new THREE.Mesh(
-        new THREE.BoxGeometry(0.24, 0.16, 0.24),
-        new THREE.MeshLambertMaterial({ color: hoefKleur })
-      );
-      hoef.position.y = -0.8;
-      poot.add(hoef);
-      body.add(poot);
-      lokalePoten.push(poot);
-    });
-
-    if (type === "otter") {
-      group.scale.setScalar(0.72);
-    } else if (type === "paard") {
+    if (type === "paard") {
+      poten = maakPaardachtig(body, lambert(0xa06a3c), [0x4a2f18, 0x5d3a20, 0x4a2f18], 0x4a2f18, 0x3d2b1a, false);
       group.scale.set(1.05, 1.12, 1.05);
+    } else if (type === "otter") {
+      var bruin = lambert(0x8b5e34);
+      var licht = lambert(0xd2a878);
+      addBol(body, 0.72, bruin, 0, 0.55, -0.05, 1, 0.72, 1.65);
+      addBol(body, 0.38, bruin, 0, 0.88, 0.85);
+      addBol(body, 0.2, licht, 0, 0.78, 1.18, 0.9, 0.7, 1.1);
+      addOgen(body, 0.16, 0.95, 1.05, 0.06);
+      [-1, 1].forEach(function (z1) {
+        addBol(body, 0.11, bruin, z1 * 0.22, 1.18, 0.78);
+      });
+      addCilinder(body, 0.17, 0.04, 1.0, bruin, 0, 0.5, -1.05, Math.PI * 0.42, 0);
+      poten = maakPoten(body, [[-0.3, 0.38, 0.5], [0.3, 0.38, 0.5], [-0.3, 0.38, -0.55], [0.3, 0.38, -0.55]], 0.38, 0.17, bruin, lambert(0x5d3f22));
+      group.scale.setScalar(0.85);
+    } else if (type === "konijn") {
+      var wit = lambert(0xf2f2f2);
+      var roze = lambert(0xf5b8c4);
+      addBol(body, 0.5, wit, 0, 0.55, -0.1, 1, 0.9, 1.3);
+      addBol(body, 0.32, wit, 0, 0.88, 0.55);
+      addBol(body, 0.14, wit, 0, 0.8, 0.88, 0.9, 0.7, 1.1);
+      addOgen(body, 0.13, 0.95, 0.78, 0.055);
+      [-1, 1].forEach(function (z1) {
+        var oor = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.55, 10), wit);
+        oor.position.set(z1 * 0.12, 1.42, 0.5);
+        oor.rotation.z = -z1 * 0.12;
+        oor.rotation.x = -0.12;
+        oor.castShadow = true;
+        body.add(oor);
+        addBol(body, 0.045, roze, z1 * 0.12, 1.4, 0.54);
+      });
+      addBol(body, 0.07, roze, 0, 0.8, 0.99);
+      addBol(body, 0.16, lambert(0xffffff), 0, 0.62, -0.78);
+      poten = maakPoten(body, [[-0.2, 0.4, 0.35], [0.2, 0.4, 0.35], [-0.24, 0.42, -0.5], [0.24, 0.42, -0.5]], 0.4, 0.13, wit, roze);
+      group.scale.setScalar(0.9);
+    } else if (type === "kat") {
+      var oranje = lambert(0xf0932b);
+      var witK = lambert(0xffffff);
+      addBol(body, 0.42, oranje, 0, 0.5, 0, 0.9, 0.8, 1.45);
+      addBol(body, 0.28, oranje, 0, 0.8, 0.55);
+      addBol(body, 0.15, witK, 0, 0.72, 0.84, 0.9, 0.7, 1.1);
+      addOren(body, oranje, 0.15, 1.06, 0.48, 0.09, 0.24, 0.15);
+      addOgen(body, 0.12, 0.86, 0.76, 0.05, 0x1e6b3a);
+      [-1, 1].forEach(function (z1) {
+        for (var i = 0; i < 3; i++) {
+          addCilinder(body, 0.008, 0.006, 0.34, witK, z1 * 0.3, 0.74 - i * 0.03, 0.86, 0, -z1 * Math.PI / 2);
+        }
+      });
+      addCilinder(body, 0.05, 0.025, 0.85, oranje, 0, 0.85, -0.8, Math.PI * 0.38, 0);
+      poten = maakPoten(body, [[-0.16, 0.34, 0.4], [0.16, 0.34, 0.4], [-0.16, 0.34, -0.42], [0.16, 0.34, -0.42]], 0.34, 0.1, oranje, witK);
+      group.scale.setScalar(0.85);
+    } else if (type === "varken") {
+      var rozeV = lambert(0xf4a7b9);
+      var donkerRoze = lambert(0xe07a9a);
+      addBol(body, 0.55, rozeV, 0, 0.6, 0, 1, 0.95, 1.3);
+      addBol(body, 0.38, rozeV, 0, 0.72, 0.62);
+      addCilinder(body, 0.16, 0.16, 0.14, donkerRoze, 0, 0.7, 0.98, Math.PI / 2, 0);
+      addOren(body, rozeV, 0.2, 1.06, 0.5, 0.1, 0.2, 0.45);
+      addOgen(body, 0.16, 0.8, 0.9, 0.05);
+      var krul = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.03, 8, 14), donkerRoze);
+      krul.position.set(0, 0.78, -0.75);
+      body.add(krul);
+      poten = maakPoten(body, [[-0.22, 0.38, 0.45], [0.22, 0.38, 0.45], [-0.22, 0.38, -0.48], [0.22, 0.38, -0.48]], 0.38, 0.15, rozeV, donkerRoze);
+      group.scale.setScalar(0.9);
+    } else if (type === "axolotl") {
+      var bleek = lambert(0xf9d3da);
+      var kieuw = lambert(0xe8607c);
+      addBol(body, 0.45, bleek, 0, 0.4, -0.1, 1, 0.72, 1.7);
+      addDoos(body, 0.6, 0.32, 0.55, bleek, 0, 0.45, 0.6);
+      addOgen(body, 0.17, 0.52, 0.82, 0.05);
+      [-1, 1].forEach(function (z1) {
+        for (var i = 0; i < 3; i++) {
+          addKegel(body, 0.07, 0.32, kieuw, z1 * 0.32, 0.62 - i * 0.09, 0.5 - i * 0.12, 0.25, -z1 * (Math.PI / 2 - 0.2));
+        }
+      });
+      addDoos(body, 0.08, 0.28, 0.75, kieuw, 0, 0.38, -0.9);
+      poten = maakPoten(body, [[-0.2, 0.24, 0.4], [0.2, 0.24, 0.4], [-0.2, 0.24, -0.5], [0.2, 0.24, -0.5]], 0.24, 0.09, bleek, kieuw);
+      group.scale.setScalar(0.8);
+    } else {
+      poten = maakPaardachtig(body, lambert(0xffffff), [0xff7ad9, 0xa06bff, 0x40e0d0], 0x40e0d0, 0xa06bff, true);
     }
 
-    return { group: group, body: body, poten: lokalePoten };
+    return { group: group, body: body, poten: poten };
   }
 
   var huidigDier = "eenhoorn";
@@ -685,7 +766,7 @@
         b.position.x - unicorn.group.position.x,
         b.position.z - unicorn.group.position.z
       );
-      if (d < 1.3) {
+      if (d < 1.3 * Math.max(unicorn.group.scale.x, 0.6)) {
         var letter = b.userData.letter;
         scene.remove(b);
         letterBlokken.splice(i, 1);
@@ -776,13 +857,14 @@
       p.rotation.x = i % 2 === 0 ? zwaai : -zwaai;
     });
 
+    var dierSchaal = Math.max(unicorn.group.scale.x, 0.6);
     var camDoel = new THREE.Vector3(
-      unicorn.group.position.x - Math.sin(camHeading) * 8,
-      5,
-      unicorn.group.position.z - Math.cos(camHeading) * 8
+      unicorn.group.position.x - Math.sin(camHeading) * 8 * dierSchaal,
+      5 * dierSchaal,
+      unicorn.group.position.z - Math.cos(camHeading) * 8 * dierSchaal
     );
     camera.position.lerp(camDoel, Math.min(1, dt * 4));
-    camera.lookAt(unicorn.group.position.x, 2, unicorn.group.position.z);
+    camera.lookAt(unicorn.group.position.x, 1 + dierSchaal, unicorn.group.position.z);
   }
 
   function updateWereld(dt, t) {
