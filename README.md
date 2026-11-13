@@ -2,7 +2,7 @@
 
 Een vrolijk 3D-browserspel voor kinderen uit groep 3 (6-7 jaar) die letters leren.
 
-Bestuur je dier (eenhoorn, paard of otter) door een kleurrijke 3D-wei en verzamel de zwevende letterblokjes
+Bestuur je dier (eenhoorn, paard, otter, konijn, kat, varken of axolotl) door een kleurrijke 3D-wei en verzamel de zwevende letterblokjes
 van het woord bovenaan. Loop tegen een blokje aan om de letter te sparen: het spat
 uit elkaar in vonkjes met een vrolijk geluidje. Is het woord compleet? Confetti,
 fanfare en een ster! ⭐
@@ -18,7 +18,7 @@ fanfare en een ster! ⭐
 
 Open `index.html` in een browser. Geen build-stap nodig.
 
-- Kies aan het begin je dier: eenhoorn 🦄, paard 🐴 of otter 🦦
+- Kies aan het begin je dier: eenhoorn 🦄, paard 🐴, otter 🦦, konijn 🐰, kat 🐱, varken 🐷 of axolotl 🦎
 - Bewegen: pijltjestoetsen of WASD, relatief ten opzichte van de camera (op tablet: de ronde knoppen onderaan)
 - 🔊 geluid aan/uit, 🔄 opnieuw beginnen
 
