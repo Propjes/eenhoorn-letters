@@ -30,6 +30,8 @@ bal ⚽, tas 🎒, pen ✏️, boek 📖, deur 🚪, mus 🐭, raam 🪟,
 ijs 🍦, kaas 🧀, peer 🍐, boos 😠, koe 🐄, poes 🐈, tien 🔟, ziek 🤒, neus 👃, hart ❤️
 
 Inclusief gecombineerde klinkers (tweeklanken): aa, ee, oo, ui, oe, ij, ie, eu.
+Elke twyllank is één letterblokje (bijvoorbeeld "aa" in maan), en het woord
+bovenaan heeft per lettergroep één vakje.
 
 ## Techniek
 
