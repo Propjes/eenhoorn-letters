@@ -25,7 +25,10 @@ Open `index.html` in een browser. Geen build-stap nodig.
 ## Woordenlijst
 
 kat 🐱, hond 🐶, zon ☀️, maan 🌙, vis 🐟, boom 🌳, huis 🏠, kip 🐔, eend 🦆,
-bal ⚽, tas 🎒, pen ✏️, boek 📖, deur 🚪, mus 🐭, raam 🪟
+bal ⚽, tas 🎒, pen ✏️, boek 📖, deur 🚪, mus 🐭, raam 🪟,
+ijs 🍦, kaas 🧀, peer 🍐, boos 😠, koe 🐄, poes 🐈, tien 🔟, ziek 🤒, neus 👃, hart ❤️
+
+Inclusief gecombineerde klinkers (tweeklanken): aa, ee, oo, ui, oe, ij, ie, eu.
 
 ## Techniek
 

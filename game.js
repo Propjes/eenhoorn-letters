@@ -17,7 +17,17 @@
     { woord: "boek", emoji: "📖" },
     { woord: "deur", emoji: "🚪" },
     { woord: "mus", emoji: "🐭" },
-    { woord: "raam", emoji: "🪟" }
+    { woord: "raam", emoji: "🪟" },
+    { woord: "ijs", emoji: "🍦" },
+    { woord: "kaas", emoji: "🧀" },
+    { woord: "peer", emoji: "🍐" },
+    { woord: "boos", emoji: "😠" },
+    { woord: "koe", emoji: "🐄" },
+    { woord: "poes", emoji: "🐈" },
+    { woord: "tien", emoji: "🔟" },
+    { woord: "ziek", emoji: "🤒" },
+    { woord: "neus", emoji: "👃" },
+    { woord: "hart", emoji: "❤️" }
   ];
 
   var ALFABET = "abcdefghijklmnopqrstuvwxyz";
