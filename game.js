@@ -32,6 +32,24 @@
 
   var ALFABET = "abcdefghijklmnopqrstuvwxyz";
 
+  var TWEEKLANKEN = ["aa", "ee", "oo", "ui", "au", "ou", "eu", "oe", "ij", "ie", "ei"];
+
+  function letterGroepen(woord) {
+    var groepen = [];
+    var i = 0;
+    while (i < woord.length) {
+      var twee = woord.substr(i, 2);
+      if (TWEEKLANKEN.indexOf(twee) !== -1) {
+        groepen.push(twee);
+        i += 2;
+      } else {
+        groepen.push(woord.charAt(i));
+        i += 1;
+      }
+    }
+    return groepen;
+  }
+
   var startscherm = document.getElementById("startscherm");
   var startKnop = document.getElementById("start-knop");
   var hud = document.getElementById("hud");
@@ -575,7 +593,8 @@
     var ctx = c.getContext("2d");
     ctx.fillStyle = "#" + kleur.getHexString();
     ctx.fillRect(0, 0, 128, 128);
-    ctx.font = "bold 88px 'Comic Sans MS', 'Chalkboard SE', sans-serif";
+    var grootte = letter.length > 1 ? 62 : 88;
+    ctx.font = "bold " + grootte + "px 'Comic Sans MS', 'Chalkboard SE', sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.lineWidth = 10;
@@ -602,7 +621,7 @@
     var aantalAfleiding = 2 + Math.floor(Math.random() * 2);
     while (afleiding.length < aantalAfleiding) {
       var l = ALFABET[Math.floor(Math.random() * ALFABET.length)];
-      if (doelLetters.indexOf(l) === -1 && afleiding.indexOf(l) === -1) {
+      if (huidigWoord.woord.indexOf(l) === -1 && afleiding.indexOf(l) === -1) {
         afleiding.push(l);
       }
     }
@@ -650,7 +669,7 @@
 
   function nieuwWoord() {
     huidigWoord = kiesWoord();
-    doelLetters = huidigWoord.woord.split("");
+    doelLetters = letterGroepen(huidigWoord.woord);
     gevuld = doelLetters.map(function () { return false; });
     renderWoord();
     letterBlokken.forEach(function (b) { scene.remove(b); });
@@ -675,6 +694,7 @@
     dot.className = "spaar-letter";
     dot.textContent = letter;
     dot.style.background = letterHex(letter);
+    if (letter.length > 1) dot.style.fontSize = "0.95rem";
     spaarbakEl.appendChild(dot);
   }
 
