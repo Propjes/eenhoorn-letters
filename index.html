@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eenhoorn Letters</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="spel">
+    <h1>🦄 Eenhoorn Letters</h1>
+    <p class="uitleg">Welke letter staat op de kaart? Kies het juiste antwoord!</p>
+
+    <div class="scoreboard">
+      <span>Score: <strong id="score">0</strong></span>
+      <span>Ronde: <strong id="ronde">1</strong></span>
+    </div>
+
+    <div id="kaart" class="kaart">A</div>
+
+    <div id="antwoorden" class="antwoorden"></div>
+
+    <p id="feedback" class="feedback"></p>
+
+    <button id="opnieuw" class="knop" type="button">Opnieuw beginnen</button>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>

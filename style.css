@@ -1,0 +1,119 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Comic Sans MS", "Chalkboard SE", sans-serif;
+  background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spel {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  padding: 32px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+}
+
+h1 {
+  color: #7b2ff7;
+  margin-bottom: 8px;
+}
+
+.uitleg {
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.kaart {
+  font-size: 6rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #7b2ff7, #f107a3);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.antwoorden {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.antwoord {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 16px;
+  border: 3px solid #7b2ff7;
+  border-radius: 12px;
+  background: #f6efff;
+  color: #7b2ff7;
+  cursor: pointer;
+  transition: transform 0.1s, background 0.2s;
+  text-transform: uppercase;
+}
+
+.antwoord:hover {
+  background: #e3d4ff;
+  transform: scale(1.05);
+}
+
+.antwoord.goed {
+  background: #b6f0b6;
+  border-color: #2e9e2e;
+  color: #1c6b1c;
+}
+
+.antwoord.fout {
+  background: #ffc9c9;
+  border-color: #d33;
+  color: #a11;
+}
+
+.feedback {
+  min-height: 1.5em;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.feedback.goed {
+  color: #2e9e2e;
+}
+
+.feedback.fout {
+  color: #d33;
+}
+
+.knop {
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  background: #7b2ff7;
+  color: #fff;
+  cursor: pointer;
+}
+
+.knop:hover {
+  background: #5f1fd1;
+}
