@@ -2,28 +2,47 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eenhoorn Letters</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>🦄 Eenhoorn Letters</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 </head>
 <body>
-  <main class="spel">
-    <h1>🦄 Eenhoorn Letters</h1>
-    <p class="uitleg">Welke letter staat op de kaart? Kies het juiste antwoord!</p>
+  <div id="canvas-houder"></div>
 
-    <div class="scoreboard">
-      <span>Score: <strong id="score">0</strong></span>
-      <span>Ronde: <strong id="ronde">1</strong></span>
+  <div id="hud" class="verborgen">
+    <div id="woord-vak" class="hud-vak">
+      <span id="woord-emoji"></span>
+      <span id="woord-letters"></span>
     </div>
 
-    <div id="kaart" class="kaart">A</div>
+    <div id="score-vak" class="hud-vak">
+      <span id="sterren">⭐ 0</span>
+      <button id="geluid-knop" class="hud-knop" type="button" title="Geluid aan/uit">🔊</button>
+      <button id="opnieuw-knop" class="hud-knop" type="button" title="Opnieuw beginnen">🔄</button>
+    </div>
 
-    <div id="antwoorden" class="antwoorden"></div>
+    <div id="spaarbak" class="hud-vak"></div>
 
-    <p id="feedback" class="feedback"></p>
+    <div id="banner" class="verborgen">Goed gedaan! 🎉</div>
 
-    <button id="opnieuw" class="knop" type="button">Opnieuw beginnen</button>
-  </main>
+    <div id="aanraak-knoppen">
+      <button class="aanraak" data-richting="links" type="button">⬅️</button>
+      <button class="aanraak" data-richting="omhoog" type="button">⬆️</button>
+      <button class="aanraak" data-richting="omlaag" type="button">⬇️</button>
+      <button class="aanraak" data-richting="rechts" type="button">➡️</button>
+    </div>
+  </div>
+
+  <div id="startscherm">
+    <div class="start-kaart">
+      <h1>🦄 Eenhoorn Letters</h1>
+      <p>Ren met de eenhoorn door de vrolijke wei en verzamel alle letters van het woord!</p>
+      <p>Loop tegen een zwevend letterblokje aan om de letter te pakken. 💨</p>
+      <p>Beweeg met de <strong>pijltjestoetsen</strong> of <strong>WASD</strong> — of met de knoppen onderaan op een tablet. 📱</p>
+      <button id="start-knop" type="button">▶ Start!</button>
+    </div>
+  </div>
 
   <script src="game.js"></script>
 </body>
