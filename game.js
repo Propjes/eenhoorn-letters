@@ -392,10 +392,10 @@
   }
 
   function maakPaardachtig(body, vacht, manenKleuren, staartKleur, hoefKleur, metHoorn) {
-    addBol(body, 0.95, vacht, 0, 1.2, 0, 1, 0.85, 1.45);
-    addBol(body, 0.5, vacht, 0, 1.85, 0.72, 0.75, 1.15, 0.85);
-    addBol(body, 0.42, vacht, 0, 2.15, 1.05, 0.9, 0.8, 1.05);
-    addBol(body, 0.27, vacht, 0, 2.0, 1.45, 0.85, 0.65, 1.25);
+    addBol(body, 0.85, vacht, 0, 1.2, 0, 0.85, 0.78, 1.6);
+    addBol(body, 0.42, vacht, 0, 1.85, 0.72, 0.7, 1.1, 0.8);
+    addBol(body, 0.36, vacht, 0, 2.15, 1.05, 0.75, 0.7, 1.0);
+    addBol(body, 0.22, vacht, 0, 2.0, 1.45, 0.75, 0.55, 1.2);
     if (metHoorn) {
       addKegel(body, 0.13, 0.8, lambert(0xffd700), 0, 2.55, 0.98, -0.12, 0);
     }
@@ -405,7 +405,7 @@
       addBol(body, 0.24 - i * 0.03, lambert(kleur), 0, 2.42 - i * 0.24, 0.72 - i * 0.3);
     });
     addKegel(body, 0.2, 0.85, lambert(staartKleur), 0, 1.3, -1.35, Math.PI * 0.62, 0);
-    return maakPoten(body, [[-0.4, 0.95, 0.68], [0.4, 0.95, 0.68], [-0.4, 0.95, -0.68], [0.4, 0.95, -0.68]], 0.95, 0.24, vacht, lambert(hoefKleur));
+    return maakPoten(body, [[-0.36, 0.95, 0.7], [0.36, 0.95, 0.7], [-0.36, 0.95, -0.7], [0.36, 0.95, -0.7]], 0.95, 0.2, vacht, lambert(hoefKleur));
   }
 
   function maakDier(type) {
@@ -420,22 +420,22 @@
     } else if (type === "otter") {
       var bruin = lambert(0x8b5e34);
       var licht = lambert(0xd2a878);
-      addBol(body, 0.72, bruin, 0, 0.55, -0.05, 1, 0.72, 1.65);
-      addBol(body, 0.38, bruin, 0, 0.88, 0.85);
-      addBol(body, 0.2, licht, 0, 0.78, 1.18, 0.9, 0.7, 1.1);
+      addBol(body, 0.6, bruin, 0, 0.55, -0.05, 0.85, 0.62, 1.8);
+      addBol(body, 0.33, bruin, 0, 0.88, 0.85, 0.9, 0.85, 1);
+      addBol(body, 0.17, licht, 0, 0.78, 1.18, 0.85, 0.65, 1.1);
       addOgen(body, 0.16, 0.95, 1.05, 0.06);
       [-1, 1].forEach(function (z1) {
         addBol(body, 0.11, bruin, z1 * 0.22, 1.18, 0.78);
       });
       addCilinder(body, 0.17, 0.04, 1.0, bruin, 0, 0.5, -1.05, Math.PI * 0.42, 0);
-      poten = maakPoten(body, [[-0.3, 0.38, 0.5], [0.3, 0.38, 0.5], [-0.3, 0.38, -0.55], [0.3, 0.38, -0.55]], 0.38, 0.17, bruin, lambert(0x5d3f22));
+      poten = maakPoten(body, [[-0.28, 0.38, 0.5], [0.28, 0.38, 0.5], [-0.28, 0.38, -0.55], [0.28, 0.38, -0.55]], 0.38, 0.15, bruin, lambert(0x5d3f22));
       group.scale.setScalar(0.85);
     } else if (type === "konijn") {
       var wit = lambert(0xf2f2f2);
       var roze = lambert(0xf5b8c4);
-      addBol(body, 0.5, wit, 0, 0.55, -0.1, 1, 0.9, 1.3);
-      addBol(body, 0.32, wit, 0, 0.88, 0.55);
-      addBol(body, 0.14, wit, 0, 0.8, 0.88, 0.9, 0.7, 1.1);
+      addBol(body, 0.44, wit, 0, 0.55, -0.1, 0.85, 0.8, 1.45);
+      addBol(body, 0.28, wit, 0, 0.88, 0.55, 0.9, 0.9, 1);
+      addBol(body, 0.12, wit, 0, 0.8, 0.88, 0.85, 0.65, 1.1);
       addOgen(body, 0.13, 0.95, 0.78, 0.055);
       [-1, 1].forEach(function (z1) {
         var oor = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.55, 10), wit);
@@ -448,14 +448,14 @@
       });
       addBol(body, 0.07, roze, 0, 0.8, 0.99);
       addBol(body, 0.16, lambert(0xffffff), 0, 0.62, -0.78);
-      poten = maakPoten(body, [[-0.2, 0.4, 0.35], [0.2, 0.4, 0.35], [-0.24, 0.42, -0.5], [0.24, 0.42, -0.5]], 0.4, 0.13, wit, roze);
+      poten = maakPoten(body, [[-0.18, 0.4, 0.35], [0.18, 0.4, 0.35], [-0.22, 0.42, -0.5], [0.22, 0.42, -0.5]], 0.4, 0.12, wit, roze);
       group.scale.setScalar(0.9);
     } else if (type === "kat") {
       var oranje = lambert(0xf0932b);
       var witK = lambert(0xffffff);
-      addBol(body, 0.42, oranje, 0, 0.5, 0, 0.9, 0.8, 1.45);
-      addBol(body, 0.28, oranje, 0, 0.8, 0.55);
-      addBol(body, 0.15, witK, 0, 0.72, 0.84, 0.9, 0.7, 1.1);
+      addBol(body, 0.36, oranje, 0, 0.5, 0, 0.8, 0.7, 1.55);
+      addBol(body, 0.25, oranje, 0, 0.8, 0.55, 0.9, 0.85, 1);
+      addBol(body, 0.13, witK, 0, 0.72, 0.84, 0.85, 0.65, 1.1);
       addOren(body, oranje, 0.15, 1.06, 0.48, 0.09, 0.24, 0.15);
       addOgen(body, 0.12, 0.86, 0.76, 0.05, 0x1e6b3a);
       [-1, 1].forEach(function (z1) {
@@ -464,25 +464,25 @@
         }
       });
       addCilinder(body, 0.05, 0.025, 0.85, oranje, 0, 0.85, -0.8, Math.PI * 0.38, 0);
-      poten = maakPoten(body, [[-0.16, 0.34, 0.4], [0.16, 0.34, 0.4], [-0.16, 0.34, -0.42], [0.16, 0.34, -0.42]], 0.34, 0.1, oranje, witK);
+      poten = maakPoten(body, [[-0.15, 0.34, 0.4], [0.15, 0.34, 0.4], [-0.15, 0.34, -0.42], [0.15, 0.34, -0.42]], 0.34, 0.09, oranje, witK);
       group.scale.setScalar(0.85);
     } else if (type === "varken") {
       var rozeV = lambert(0xf4a7b9);
       var donkerRoze = lambert(0xe07a9a);
-      addBol(body, 0.55, rozeV, 0, 0.6, 0, 1, 0.95, 1.3);
-      addBol(body, 0.38, rozeV, 0, 0.72, 0.62);
+      addBol(body, 0.5, rozeV, 0, 0.6, 0, 0.9, 0.85, 1.35);
+      addBol(body, 0.34, rozeV, 0, 0.72, 0.62, 0.9, 0.9, 1);
       addCilinder(body, 0.16, 0.16, 0.14, donkerRoze, 0, 0.7, 0.98, Math.PI / 2, 0);
       addOren(body, rozeV, 0.2, 1.06, 0.5, 0.1, 0.2, 0.45);
       addOgen(body, 0.16, 0.8, 0.9, 0.05);
       var krul = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.03, 8, 14), donkerRoze);
       krul.position.set(0, 0.78, -0.75);
       body.add(krul);
-      poten = maakPoten(body, [[-0.22, 0.38, 0.45], [0.22, 0.38, 0.45], [-0.22, 0.38, -0.48], [0.22, 0.38, -0.48]], 0.38, 0.15, rozeV, donkerRoze);
+      poten = maakPoten(body, [[-0.2, 0.38, 0.45], [0.2, 0.38, 0.45], [-0.2, 0.38, -0.48], [0.2, 0.38, -0.48]], 0.38, 0.13, rozeV, donkerRoze);
       group.scale.setScalar(0.9);
     } else if (type === "axolotl") {
       var bleek = lambert(0xf9d3da);
       var kieuw = lambert(0xe8607c);
-      addBol(body, 0.45, bleek, 0, 0.4, -0.1, 1, 0.72, 1.7);
+      addBol(body, 0.4, bleek, 0, 0.4, -0.1, 0.85, 0.62, 1.8);
       addDoos(body, 0.6, 0.32, 0.55, bleek, 0, 0.45, 0.6);
       addOgen(body, 0.17, 0.52, 0.82, 0.05);
       [-1, 1].forEach(function (z1) {
@@ -491,7 +491,7 @@
         }
       });
       addDoos(body, 0.08, 0.28, 0.75, kieuw, 0, 0.38, -0.9);
-      poten = maakPoten(body, [[-0.2, 0.24, 0.4], [0.2, 0.24, 0.4], [-0.2, 0.24, -0.5], [0.2, 0.24, -0.5]], 0.24, 0.09, bleek, kieuw);
+      poten = maakPoten(body, [[-0.18, 0.24, 0.4], [0.18, 0.24, 0.4], [-0.18, 0.24, -0.5], [0.18, 0.24, -0.5]], 0.24, 0.08, bleek, kieuw);
       group.scale.setScalar(0.8);
     } else {
       poten = maakPaardachtig(body, lambert(0xffffff), [0xff7ad9, 0xa06bff, 0x40e0d0], 0x40e0d0, 0xa06bff, true);
