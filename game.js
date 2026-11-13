@@ -17,7 +17,17 @@
     { woord: "boek", emoji: "📖" },
     { woord: "deur", emoji: "🚪" },
     { woord: "mus", emoji: "🐭" },
-    { woord: "raam", emoji: "🪟" }
+    { woord: "raam", emoji: "🪟" },
+    { woord: "ijs", emoji: "🍦" },
+    { woord: "kaas", emoji: "🧀" },
+    { woord: "peer", emoji: "🍐" },
+    { woord: "boos", emoji: "😠" },
+    { woord: "koe", emoji: "🐄" },
+    { woord: "poes", emoji: "🐈" },
+    { woord: "tien", emoji: "🔟" },
+    { woord: "ziek", emoji: "🤒" },
+    { woord: "neus", emoji: "👃" },
+    { woord: "hart", emoji: "❤️" }
   ];
 
   var ALFABET = "abcdefghijklmnopqrstuvwxyz";
@@ -93,6 +103,7 @@
   var renderer, scene, camera;
   var unicorn, unicornBody, poten = [];
   var heading = 0;
+  var camHeading = 0;
   var loopFase = 0;
   var wolken = [];
   var vlinders = [];
@@ -730,16 +741,7 @@
   });
 
   function updateBeweging(dt) {
-    var voor = new THREE.Vector3(
-      unicorn.group.position.x - camera.position.x,
-      0,
-      unicorn.group.position.z - camera.position.z
-    );
-    if (voor.lengthSq() < 0.0001) {
-      voor.set(0, 0, 1);
-    } else {
-      voor.normalize();
-    }
+    var voor = new THREE.Vector3(Math.sin(camHeading), 0, Math.cos(camHeading));
     var rechts = new THREE.Vector3(-voor.z, 0, voor.x);
     var ix = (toetsen.rechts ? 1 : 0) - (toetsen.links ? 1 : 0);
     var iz = (toetsen.omhoog ? 1 : 0) - (toetsen.omlaag ? 1 : 0);
@@ -752,6 +754,10 @@
       while (diff > Math.PI) diff -= Math.PI * 2;
       while (diff < -Math.PI) diff += Math.PI * 2;
       heading += diff * Math.min(1, dt * 10);
+      var camDiff = heading - camHeading;
+      while (camDiff > Math.PI) camDiff -= Math.PI * 2;
+      while (camDiff < -Math.PI) camDiff += Math.PI * 2;
+      camHeading += camDiff * Math.min(1, dt * 2.5);
       var snelheid = 7;
       unicorn.group.position.x += Math.sin(heading) * snelheid * dt;
       unicorn.group.position.z += Math.cos(heading) * snelheid * dt;
@@ -771,9 +777,9 @@
     });
 
     var camDoel = new THREE.Vector3(
-      unicorn.group.position.x - Math.sin(heading) * 8,
+      unicorn.group.position.x - Math.sin(camHeading) * 8,
       5,
-      unicorn.group.position.z - Math.cos(heading) * 8
+      unicorn.group.position.z - Math.cos(camHeading) * 8
     );
     camera.position.lerp(camDoel, Math.min(1, dt * 4));
     camera.lookAt(unicorn.group.position.x, 2, unicorn.group.position.z);
